@@ -55,6 +55,10 @@ header_print("Exercise 1.1")
 orders_strings = ...
 # from .solutions.exercise_1_1 import orders_strings
 
+orders_strings = data_string.split(';')
+print(orders_strings[:15])
+
+
 """
 Exercise 1.2
 ============
@@ -66,7 +70,8 @@ it `orders_lists`.
 > Example output: [["Martin Adams ", "51", "M", "Monday 01 January 2024", "Bald", "20"], ...]
 """
 header_print("Exercise 1.2")
-orders_lists = ...
+orders_lists = [order.split(',') for order in orders_strings]
+print(orders_lists[:15])  
 # from .solutions.exercise_1_2 import orders_list
 
 """
@@ -83,6 +88,13 @@ and name it `orders_cleaned`.
 header_print("Exercise 1.3")
 orders_cleaned = ...
 # from .solutions.exercise_1_3 import orders_cleaned
+orders_cleaned = []
+for order in orders_lists:
+    order_copy = order.copy()  # Here i made a copy yo avoide changing the original list
+    order_copy[0] = order_copy[0].strip()  # Removing spaces from the names
+    orders_cleaned.append(order_copy)
+print(orders_cleaned[:15])  # Shows first 15 cleaned orders o check if it worked
+# double check if spaces are removed
 
 """
 Exercise 1.4
@@ -98,7 +110,13 @@ new variable and name it `orders_casted`.
 > Example output: [["Martin Adams", 51, "M", "Monday 01 January 2024", "Bald", 20], ...]
 """
 header_print("Exercise 1.4")
-orders_casted = ...
+orders_casted = []
+for order in orders_cleaned:
+    order_copy = order.copy()
+    order_copy[1] = int(order_copy[1])  # Age, 2nd item to integer
+    order_copy[5] = int(order_copy[5])  # Price 6th item to integer
+    orders_casted.append(order_copy)
+print(orders_casted[:5])  # Show first 5 casted orders
 # from .solutions.exercise_1_4 import orders_casted
 
 """
@@ -114,7 +132,13 @@ For each sub-exercise, print it in the format: "Customer <name> got the haircut 
 > "Customer Glenn Collier got the haircut Pompadour on Tuesday 31 December 2024 for €38.00."
 """
 header_print("Exercise 2")
-
+orders_first_5 = orders_casted[:5]
+for order in orders_first_5: #First 5 orders from the cleaned and casted data.
+    name = order[0]   
+    date = order[3]
+    hairstyle = order[4]
+    cost = order[5]
+    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.") #.2f for 2 decimal places to show two decimal places for price
 """
 Exercise 2.1
 ============
@@ -129,15 +153,28 @@ Exercise 2.2
 What were the last 5 orders?
 """
 header_print("Exercise 2.2")
-orders_last_5 = ...
+orders_last_5 = orders_casted[-5:]
 
+for order in orders_last_5:
+    name = order[0]           # Customer's full name
+    date = order[3]           # Date of the order
+    hairstyle = order[4]      # Hairstyle ordered
+    cost = order[5]           # Price of the hairstyle (number)
+    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
 """
 Exercise 2.3
 ============
 What was the 1000th order?
 """
 header_print("Exercise 2.3")
-order_1000 = ...
+order_1000 = orders_casted[999]
+
+name = order_1000[0]
+date = order_1000[3]
+hairstyle = order_1000[4]
+cost = order_1000[5]
+
+print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
 
 """
 Exercise 2.4
@@ -145,7 +182,19 @@ Exercise 2.4
 What were the 2000th until 2025th orders?
 """
 header_print("Exercise 2.4")
-order_2000_to_2025 = ...
+#Firstly, 2000 is at index 1999 as well as 2025 is at index 2024 
+orders_2000_to_2025 = orders_casted[1999:2025]
+
+for order in orders_2000_to_2025:
+    name = order[0]           
+    date = order[3]            
+    hairstyle = order[4]      
+    cost = order[5]           # Prices are already integers
+    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
+
+#I gor curious to know the number of orders from 2000 to 2025 :)
+print("Number of orders from 2000 to 2025:")
+print(len(orders_2000_to_2025))
 
 """
 Exercise 3
@@ -160,7 +209,12 @@ then print how many there are in and who they are in this format: "There are ...
 Extra challenge: Try this with a set comprehension!
 """
 header_print("Exercise 3")
-unique_names = ...
+
+all_names = [order[0] for order in orders_casted]  # Firstly, Collecting all customer names 
+
+unique_names = list(set(all_names))  #Secondly, finding only uniqe names, converting to list
+print(f"There are {len(unique_names)} unique names, namely {unique_names[:20]}...")
+
 
 """
 Exercise 4
@@ -175,15 +229,30 @@ Exercise 4.1
 What was the total revenue in the data? Put this in a variable named `total_revenue`.
 """
 header_print("Exercise 4.1")
-total_revenue = ...
+# we set total revenue variable 0
+total_revenue=0
+for order in orders_casted:
+    total_revenue += order[5]  # index 5 which is the price
 
-"""
+print(f"Total revenue: €{total_revenue:.2f}")  # at 2 decimals  
+
+"""  # End the previous multi-line comment block. chat GPT helped.
+
 Exercise 4.2
 ============
 What was the revenue in the month of March 2024? Put this in a variable named `revenue_march_2024`.
 """
 header_print("Exercise 4.2")
-revenue_march_2024 = ...
+revenue_march_2024 = 0 #As we did in total revenue, we set variable to 0 first
+
+for order in orders_casted:
+    date = order[3]            # index 3 which is the date
+    if "March 2024" in date:   # Checking if the date contains 'March 2024'
+        revenue_march_2024 += order[5]  # Add the price
+
+# Print the result at the end
+print(f"Revenue in March 2024: €{revenue_march_2024:.2f}")
+
 
 """
 Exercise 4.3
@@ -191,8 +260,21 @@ Exercise 4.3
 What was the revenue on Mondays? What about on Sundays? Name these variables `revenue_mondays` and `revenue_sundays`.
 """
 header_print("Exercise 4.3")
-revenue_mondays = ...
-revenue_sundays = ...
+
+revenue_mondays = 0     # set it to 0
+revenue_sundays = 0     # set it to 0
+
+# Loop through every order and check the day of week in the date
+for order in orders_casted:
+    date = order[3]          # index 3 = date
+    if date.startswith("Monday"):
+        revenue_mondays += order[5]
+    elif date.startswith("Sunday"):
+        revenue_sundays += order[5]
+
+# Print both results (after loop! I didnt forget now:)
+print(f"Revenue on Mondays: €{revenue_mondays:.2f}")
+print(f"Revenue on Sundays: €{revenue_sundays:.2f}")
 
 """
 Exercise 4.4
@@ -209,9 +291,39 @@ For each gender, print in the following format:
 Extra challenge: try to use only one for-loop to compute the necessary information for all genders.
 """
 header_print("Exercise 4.4")
-revenue_m = ...
-revenue_f = ...
-revenue_x = ...
+
+# Set starting values for each gender
+revenue_m = 0
+revenue_f = 0
+revenue_x = 0
+count_m = 0
+count_f = 0
+count_x = 0
+
+# Loop through every order and update totals/counts
+for order in orders_casted:
+    gender = order[2]
+    price = order[5]
+    if gender == "M":
+        revenue_m += price
+        count_m += 1
+    elif gender == "F":
+        revenue_f += price
+        count_f += 1
+    elif gender == "X":
+        revenue_x += price
+        count_x += 1
+
+# Calculate average revenues (rounded to two decimals)
+average_m = revenue_m / count_m if count_m > 0 else 0
+average_f = revenue_f / count_f if count_f > 0 else 0
+average_x = revenue_x / count_x if count_x > 0 else 0
+
+# Print results for each gender
+print(f"Revenue M: €{revenue_m:.2f} ({count_m} clients). Average revenue: €{average_m:.2f}.")
+print(f"Revenue F: €{revenue_f:.2f} ({count_f} clients). Average revenue: €{average_f:.2f}.")
+print(f"Revenue X: €{revenue_x:.2f} ({count_x} clients). Average revenue: €{average_x:.2f}.")
+
 
 """
 Exercise 4.5
@@ -230,7 +342,21 @@ header_print("Exercise 4.5")
 HAIRSTYLES = generate_data.HAIRSTYLES
 print(f"{HAIRSTYLES=}")
 
-average_price_haircut = ...
+# Calculate the average price from HAIRSTYLES
+total_price = 0
+count_styles = 0
+
+# Go through each hairstyle tuple (name, price)
+for name, price in HAIRSTYLES:
+    total_price += price
+    count_styles += 1
+
+# Compute the average price, avoiding division by zero
+average_price_haircut = total_price / count_styles if count_styles > 0 else 0
+
+# Print the result in the required format
+print()
+print(f"Average price of a haircut: €{average_price_haircut:.2f}.")
 
 """
 Exercise 4.6
@@ -249,7 +375,20 @@ Print the result in the following format:
 > "Revenue after price change: €<total_revenue_inflation_correction>."
 """
 header_print("Exercise 4.6")
-total_revenue_inflation_correction = ...
+
+
+total_revenue_inflation_correction = 0
+
+for order in orders_casted:
+    age = order[1]
+    price = order[5]
+
+    if 18 <= age <= 65:
+        corrected_price = price * 1.035
+    else:
+        corrected_price = price
+    total_revenue_inflation_correction += corrected_price
+print(f"Revenue after price change: €{total_revenue_inflation_correction:.2f}.")
 
 """
 Exercise 4.7
@@ -265,7 +404,10 @@ Print the output in the following format:
 header_print("Exercise 4.7")
 # from .solutions.exercise_4_1 import total_revenue
 # from .solutions.exercise_4_6 import total_revenue_inflation_correction
-revenue_difference = ...
+
+revenue_difference = total_revenue_inflation_correction - total_revenue
+
+print(f"Revenue increase after inflation correction: €{revenue_difference:.2f}.")
 
 """
 Exercise 4.8
@@ -280,7 +422,22 @@ format:
 > "Revenue after discount: €<total_revenue_discount>."
 """
 header_print("Exercise 4.8")
-total_revenue_discount = ...
+
+total_revenue_discount = 0
+
+for order in orders_casted:
+    age = order[1]
+    price = order[5]
+    if age < 18: 
+        corrected_price = price * 0.9  # 10% discount
+    elif age > 65:  # Seniors
+        corrected_price = price * 0.95  # 5% discount
+    else:  
+        corrected_price = price * 1.035  # 3.5% increase
+    total_revenue_discount += corrected_price
+
+print(f"Revenue after discount: €{total_revenue_discount:.2f}.")
+
 
 """
 Exercise 4.9
@@ -291,7 +448,11 @@ Calculate the difference in revenue again. However, this time, calculate the per
 """
 header_print("Exercise 4.9")
 # from .solutions.exercise_4_8 import total_revenue_discount
-revenue_difference_percent = ...
+
+
+revenue_difference_percent = ((total_revenue_discount - total_revenue) / total_revenue) * 100  # Calculate the percentage increase 
+
+print(f"Percentual revenue increase after discount: {revenue_difference_percent:.2f}%.")
 
 """
 Exercise 4.10
@@ -306,7 +467,25 @@ Calculate the new revenue after without the discount for the Wavy haircut for ju
 > "Revenue after discount (no Wavy): €<total_revenue_discount_no_wavy>."
 """
 header_print("Exercise 4.10")
-total_revenue_discount_no_wavy = ...
+
+total_revenue_discount_no_wavy = 0
+
+for order in orders_casted:
+    age = order[1]
+    price = order[5]
+    style = order[4]
+    # Juniors get 10% discount, except for Wavy
+    if age < 18 and style == "Wavy":
+        corrected_price = price  # No discount if Wavy
+    elif age < 18:  # Juniors, not Wavy
+        corrected_price = price * 0.9
+    elif age > 65:  # Seniors
+        corrected_price = price * 0.95
+    else:  # Working class
+        corrected_price = price * 1.035
+    total_revenue_discount_no_wavy += corrected_price
+
+print(f"Revenue after discount (no Wavy): €{total_revenue_discount_no_wavy:.2f}.")
 
 """
 Exercise 5
@@ -327,7 +506,19 @@ Test the function on the original input, `orders_casted`, and see if you get the
 > "Total revenue: <total_revenue>, Total revenue with function: <total_revenue_function>".
 """
 header_print("Exercise 5.1")
-total_revenue_function = ...
+
+def calculate_revenue(orders):  # Define the function which takes  list of orders and returns total revenue
+
+    revenue = 0
+    for order in orders:
+        revenue += order[5]
+    return revenue
+
+# Run the function on your original data
+total_revenue_function = calculate_revenue(orders_casted)
+
+# Print the comparison of original and function computed revenue
+print(f"Total revenue: {total_revenue:.2f}, Total revenue with function: {total_revenue_function:.2f}.")
 
 """
 Exercise 5.2
@@ -342,7 +533,18 @@ result in the following format:
 > "Revenue with scaling factor <scaling_factor> is <total_revenue_scaling_factor>".
 """
 header_print("Exercise 5.2")
-total_revenue_scaling_factor = ...
+
+def calculate_revenue_scaled(orders, scaling_factor=1.0):  
+    revenue = 0
+    for order in orders:
+        revenue += order[5] * scaling_factor
+    return revenue
+
+# Test the function with a 7.5% price increase (scaling factor 1.075)
+scaling_factor = 1.075
+total_revenue_scaling_factor = calculate_revenue_scaled(orders_casted, scaling_factor)
+
+print(f"Revenue with scaling factor {scaling_factor} is {total_revenue_scaling_factor:.2f}.")
 
 """
 Exercise 6
@@ -356,4 +558,14 @@ NB: You can assume the list `orders_casted` is sorted, meaning the first row is 
 the second order, etc.
 """
 header_print("Exercise 6")
-winner = ...
+
+current_revenue = 0
+winner = None
+
+for order in orders_casted:
+    current_revenue += order[5]
+    if current_revenue > 1000 and winner is None:
+        winner = order[0]  # Customer's name
+        print(f"Reached revenue of €1,000.00. {winner} is the lucky one! 🎉")
+        break
+
