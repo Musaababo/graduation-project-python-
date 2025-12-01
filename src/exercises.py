@@ -197,6 +197,10 @@ What were the 2000th until 2025th orders?
 header_print("Exercise 2.4")
 #Firstly, 2000 is at index 1999 as well as 2025 is at index 2024 
 orders_2000_to_2025 = orders_casted[1999:2025]
+ # we try to never trust the data we get, even if it’s from someone we know, I don’t know if the data has 2025 entries or not. And it might result in an out of bound error. So it’s important to add a quick test
+#I also got curious to know the number of orders from 2000 to 2025 :)
+print("Number of orders from 2000 to 2025:")
+print(len(orders_2000_to_2025))
 
 for order in orders_2000_to_2025:
     name = order[0]           
@@ -205,9 +209,7 @@ for order in orders_2000_to_2025:
     cost = order[5]           # Prices are already integers
     print_order(name, hairstyle, date, cost)
 
-#I got curious to know the number of orders from 2000 to 2025 :)
-print("Number of orders from 2000 to 2025:")
-print(len(orders_2000_to_2025))
+
 
 """
 Exercise 3
