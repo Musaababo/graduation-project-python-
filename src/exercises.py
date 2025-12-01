@@ -86,8 +86,7 @@ and name it `orders_cleaned`.
 > Example output: [["Martin Adams", "51", "M", "Monday 01 January 2024", "Bald", "20"], ...]
 """
 header_print("Exercise 1.3")
-orders_cleaned = ...
-# from .solutions.exercise_1_3 import orders_cleaned
+
 orders_cleaned = []
 for order in orders_lists:
     order_copy = order.copy()  # Here i made a copy yo avoide changing the original list
@@ -132,20 +131,33 @@ For each sub-exercise, print it in the format: "Customer <name> got the haircut 
 > "Customer Glenn Collier got the haircut Pompadour on Tuesday 31 December 2024 for €38.00."
 """
 header_print("Exercise 2")
+def print_order(name, hairstyle, date, cost):
+    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
+
 orders_first_5 = orders_casted[:5]
-for order in orders_first_5: #First 5 orders from the cleaned and casted data.
-    name = order[0]   
+
+for order in orders_first_5:  #First 5 orders from the cleaned and casted data.
+    name = order[0]
     date = order[3]
     hairstyle = order[4]
     cost = order[5]
-    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.") #.2f for 2 decimal places to show two decimal places for price
+    print_order(name, hairstyle, date, cost)
+ #.2f for 2 decimal places to show two decimal places for price
 """
 Exercise 2.1
 ============
 What were the first 3 orders?
 """
 header_print("Exercise 2.1")
-orders_first_3 = ...
+orders_first_3 = orders_casted[:3]
+
+for order in orders_first_3:
+    name = order[0]         # Customer's full name
+    date = order[3]         # Date of the order
+    hairstyle = order[4]    # Hairstyle ordered
+    cost = order[5]        # Price of the hairstyle (number)
+    print_order(name, hairstyle, date, cost)
+
 
 """
 Exercise 2.2
@@ -155,12 +167,14 @@ What were the last 5 orders?
 header_print("Exercise 2.2")
 orders_last_5 = orders_casted[-5:]
 
+
 for order in orders_last_5:
     name = order[0]           # Customer's full name
     date = order[3]           # Date of the order
     hairstyle = order[4]      # Hairstyle ordered
     cost = order[5]           # Price of the hairstyle (number)
-    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
+    print_order(name, hairstyle, date, cost)
+
 """
 Exercise 2.3
 ============
@@ -174,8 +188,7 @@ date = order_1000[3]
 hairstyle = order_1000[4]
 cost = order_1000[5]
 
-print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
-
+print_order(name, hairstyle, date, cost)
 """
 Exercise 2.4
 ============
@@ -190,9 +203,9 @@ for order in orders_2000_to_2025:
     date = order[3]            
     hairstyle = order[4]      
     cost = order[5]           # Prices are already integers
-    print(f"Customer {name} got the haircut {hairstyle} on {date} for €{cost:.2f}.")
+    print_order(name, hairstyle, date, cost)
 
-#I gor curious to know the number of orders from 2000 to 2025 :)
+#I got curious to know the number of orders from 2000 to 2025 :)
 print("Number of orders from 2000 to 2025:")
 print(len(orders_2000_to_2025))
 
